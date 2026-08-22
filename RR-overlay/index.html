@@ -278,15 +278,24 @@
         <form id="loginForm">
             <div class="form-group">
                 <label for="playerName">Mogi Name</label>
-                <input type="text" id="playerName" placeholder="Enter your name (e.g., 19:16)" required
+                <input type="text" id="playerName" placeholder="Enter your name (e.g., intz)" required
                     autocomplete="off">
             </div>
 
             <div class="form-group">
-                <label for="leaderboard">Leaderboard</label>
-                <select id="leaderboard">
-                    <option value="ChbDNG">Retro Leaderboard</option>
-                    <option value="Bu5C_D">CT Leaderboard</option>
+                <label for="category">Category</label>
+                <select id="category">
+                    <option value="rr">Retro Rewind</option>
+                    <option value="ct">Custom Tracks</option>
+                    <option value="tt">Time Trial</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="season">Season</label>
+                <select id="season">
+                    <option value="retro-rewind-season-7">Retro Rewind Season 7</option>
+                    <option value="retro-rewind-season-6">Retro Rewind Season 6</option>
                 </select>
             </div>
 
@@ -307,7 +316,7 @@
 
         <div class="credits">
             <p>Thanks to <strong>Fendi</strong> for the 1st version of the code and his idea.</p>
-            <p>Thanks to <strong>Galden</strong> for the MMR page.</p>
+            <p>Thanks to <strong>misete</strong> for rr-lounge.com API.</p>
         </div>
     </div>
 
@@ -387,16 +396,15 @@
             e.preventDefault();
 
             const playerName = document.getElementById('playerName').value.trim();
-            const leaderboard = document.getElementById('leaderboard').value;
+            const category = document.getElementById('category').value;
+            const season = document.getElementById('season').value;
             const digitColor = document.getElementById('digitColor').value;
 
             if (playerName) {
-                window.location.href = `overlay.html?player=${encodeURIComponent(playerName)}&leaderboard=${encodeURIComponent(leaderboard)}&color=${encodeURIComponent(digitColor)}`;
+                window.location.href = `overlay.html?player=${encodeURIComponent(playerName)}&category=${encodeURIComponent(category)}&season=${encodeURIComponent(season)}&color=${encodeURIComponent(digitColor)}`;
             }
         });
     </script>
 </body>
 
-
 </html>
-

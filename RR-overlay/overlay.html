@@ -263,8 +263,9 @@
 
     <script>
       const urlParams = new URLSearchParams(window.location.search);
-      const playerName = urlParams.get('player') || '19:16';
-      const leaderboard = urlParams.get('leaderboard') || 'xxwuMY';
+      const playerName = urlParams.get('player') || 'intz';
+      const category = urlParams.get('category') || 'rr'; // rr, ct, tt
+      const season = urlParams.get('season') || 'retro-rewind-season-7';
       const digitColor = urlParams.get('color') || '#ffffff';
 
       function hexToRGB(hex) {
@@ -320,21 +321,27 @@
         filterElement.setAttribute('values', matrix.join(' '));
       }
 
-      const MMR_API = `https://rr-overlay-026cabce5497.herokuapp.com/mmr?player=${encodeURIComponent(playerName)}&leaderboard=${leaderboard}`;
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const API_BASE = isLocal 
+        ? 'http://localhost:3000' 
+        : 'https://rr-api-umber.vercel.app/';
+      const MMR_API = `${API_BASE}/api/player?name=${encodeURIComponent(playerName)}&category=${category}&season=${season}`;
 
       // some image folder. ignore it
       const folderPath = "./images/";
 
+      // Updated rank tiers to match rr-lounge.com API
       const rankImages = [
-        { min: -99999, max: -1, file: "opal.png" },
+        { min: -9999, max: -1, file: "opal.png" },
         { min: 0, max: 999, file: "bronze.png" },
         { min: 1000, max: 1999, file: "silver.png" },
-        { min: 2000, max: 3499, file: "gold.png" },
-        { min: 3500, max: 4999, file: "ruby.png" },
-        { min: 5000, max: 6499, file: "emerald.png" },
-        { min: 6500, max: 7999, file: "diamond.png" },
-        { min: 8000, max: 9999, file: "master.png" },
-        { min: 10000, max: Infinity, file: "legend.png" }
+        { min: 2000, max: 3249, file: "gold.png" },
+        { min: 3250, max: 4499, file: "ruby.png" },  // Platinum in API, using ruby image
+        { min: 4500, max: 5749, file: "ruby.png" },  // Amethyst in API, using ruby image
+        { min: 5750, max: 7249, file: "emerald.png" },
+        { min: 7250, max: 8999, file: "diamond.png" },
+        { min: 9000, max: 10999, file: "master.png" },
+        { min: 11000, max: Infinity, file: "legend.png" }
       ];
 
       // zazaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aYYYYYYYYYY (it worked btw)
@@ -385,6 +392,7 @@
         try {
           const res = await fetch(MMR_API, {
             headers: {
+              "Accept": "application/json",
               "X-Requested-With": "XMLHttpRequest"
             }
           });
@@ -406,16 +414,17 @@
             return;
           }
 
-          if (data.error || data.rating === undefined || data.rating === null) {
+          // rr-lounge.com API returns: { id, name, mmr, peakMmr, mogiCount, ... }
+          if (data.error || data.mmr === undefined || data.mmr === null) {
             console.error('Player not found or invalid response:', data);
             showError();
             return;
           }
 
-          let mmr = Number(data.rating);
+          let mmr = Number(data.mmr);
 
           if (isNaN(mmr)) {
-            console.error('Invalid rating value:', data.rating);
+            console.error('Invalid MMR value:', data.mmr);
             showError();
             return;
           }
