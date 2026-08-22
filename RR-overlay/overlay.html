@@ -324,7 +324,7 @@
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const API_BASE = isLocal 
         ? 'http://localhost:3000' 
-        : 'https://rr-api-umber.vercel.app/';
+        : 'https://rr-api-umber.vercel.app';
       const MMR_API = `${API_BASE}/api/player?name=${encodeURIComponent(playerName)}&category=${category}&season=${season}`;
 
       // some image folder. ignore it
