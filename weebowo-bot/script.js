@@ -69,16 +69,16 @@ window.addEventListener('load', () => {
     }, 1000);
 });
 
-// Animate server count on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const serverCountElement = document.getElementById('server-count');
-    
-    // Get the manually set count from HTML
-    const targetCount = parseInt(serverCountElement.textContent) || 0;
-    
-    // Animate from 0 to the target count
-    animateCount(serverCountElement, 0, targetCount, 2000);
-});
+// Animate server count on page load dies now (using live stats from GitHub now)
+// document.addEventListener('DOMContentLoaded', () => {
+//     const serverCountElement = document.getElementById('server-count');
+//     
+//     // Get the manually set count from HTML
+//     const targetCount = parseInt(serverCountElement.textContent) || 0;
+//     
+//     // Animate from 0 to the target count
+//     animateCount(serverCountElement, 0, targetCount, 2000);
+// });
 
 function animateCount(element, start, end, duration) {
     let startTimestamp = null;
