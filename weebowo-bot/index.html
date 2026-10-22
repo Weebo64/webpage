@@ -164,27 +164,39 @@
     
     <!-- Auto-update server count from GitHub -->
     <script>
-        fetch('https://raw.githubusercontent.com/Weebo64/webpage/main/data/stats.json?t=' + Date.now())
-            .then(response => {
-                if (!response.ok) throw new Error('Stats not available yet');
-                return response.json();
-            })
-            .then(data => {
-                const serverCountElement = document.getElementById('server-count');
-                if (serverCountElement && data.server_count) {
-                    serverCountElement.textContent = data.server_count;
-                }
-                
-                const commandCountElement = document.getElementById('command-count');
-                if (commandCountElement && data.command_count) {
-                    commandCountElement.textContent = data.command_count;
-                }
-                
-                console.log('✅ Bot stats loaded:', data);
-            })
-            .catch(error => {
-                console.log('⚠️ Using default values. Error:', error.message);
-            });
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add cache-busting parameter to avoid stale data
+            fetch('https://raw.githubusercontent.com/Weebo64/webpage/main/data/stats.json?t=' + Date.now())
+                .then(response => {
+                    if (!response.ok) throw new Error('Stats not available yet');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('✅ Bot stats loaded:', data);
+                    
+                    // Update server count
+                    const serverCountElement = document.getElementById('server-count');
+                    if (serverCountElement) {
+                        console.log('Updating server count from', serverCountElement.textContent, 'to', data.server_count);
+                        serverCountElement.textContent = data.server_count;
+                    } else {
+                        console.error('❌ server-count element not found!');
+                    }
+                    
+                    // Update command count
+                    const commandCountElement = document.getElementById('command-count');
+                    if (commandCountElement) {
+                        console.log('Updating command count from', commandCountElement.textContent, 'to', data.command_count);
+                        commandCountElement.textContent = data.command_count;
+                    } else {
+                        console.error('❌ command-count element not found!');
+                    }
+                })
+                .catch(error => {
+                    console.log('⚠️ Using default values. Error:', error.message);
+                });
+        });
     </script>
 </body>
 
