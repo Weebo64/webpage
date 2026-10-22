@@ -164,7 +164,7 @@
     
     <!-- Auto-update server count from GitHub -->
     <script>
-        fetch('https://raw.githubusercontent.com/Weebo64/webpage/main/data/stats.json')
+        fetch('https://raw.githubusercontent.com/Weebo64/webpage/main/data/stats.json' + Date.now())
             .then(response => {
                 if (!response.ok) throw new Error('Stats not available yet');
                 return response.json();
