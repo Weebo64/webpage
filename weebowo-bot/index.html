@@ -161,15 +161,31 @@
 
     <script src="particles.js"></script>
     <script src="script.js"></script>
+    
+    <!-- Auto-update server count from GitHub -->
+    <script>
+        fetch('https://raw.githubusercontent.com/Weebo64/webpage/main/data/stats.json')
+            .then(response => {
+                if (!response.ok) throw new Error('Stats not available yet');
+                return response.json();
+            })
+            .then(data => {
+                const serverCountElement = document.getElementById('server-count');
+                if (serverCountElement && data.server_count) {
+                    serverCountElement.textContent = data.server_count;
+                }
+                
+                const commandCountElement = document.getElementById('command-count');
+                if (commandCountElement && data.command_count) {
+                    commandCountElement.textContent = data.command_count;
+                }
+                
+                console.log('✅ Bot stats loaded:', data);
+            })
+            .catch(error => {
+                console.log('⚠️ Using default values. Error:', error.message);
+            });
+    </script>
 </body>
 
-
 </html>
-
-
-
-
-
-
-
-
